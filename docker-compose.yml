@@ -16,6 +16,7 @@ services:
       - APP_SETTINGS=project.config.DevelopmentConfig
       - DATABASE_URL=postgresql://postgres:postgres@backend-db:5432/backend_dev
       - DATABASE_TEST_URL=postgresql://postgres:postgres@backend-db:5432/backend_test
+      - SECRET_KEY=my_precious
     depends_on:
       - backend-db
 
