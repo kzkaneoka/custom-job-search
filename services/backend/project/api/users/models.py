@@ -1,8 +1,9 @@
 import os
 
+from flask import current_app
 from sqlalchemy.sql import func
 
-from project import db
+from project import db, bcrypt
 
 
 class User(db.Model):
@@ -15,9 +16,12 @@ class User(db.Model):
     active = db.Column(db.Boolean(), default=True, nullable=False)
     created_date = db.Column(db.DateTime, default=func.now(), nullable=False)
 
-    def __init__(self, username="", email=""):
+    def __init__(self, username="", email="", password=""):
         self.username = username
         self.email = email
+        self.password = bcrypt.generate_password_hash(
+            password, current_app.config.get("BCRYPT_LOG_ROUNDS")
+        ).decode()
 
     def to_json(self):
         return {
@@ -26,6 +30,23 @@ class User(db.Model):
             "email": self.email,
             "active": self.active,
         }
+
+    def encode_auth_token(self, user_id):
+        """Generates the access token"""
+        try:
+            payload = {
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(
+                    days=0, seconds=5),
+                'iat': datetime.datetime.utcnow(),
+                'sub': user_id
+            }
+            return jwt.encode(
+                payload,
+                current_app.config.get('SECRET_KEY'),
+                algorithm='HS256'
+            )
+        except Exception as e:
+            return e
 
 
 if os.getenv("FLASK_ENV") == "development":

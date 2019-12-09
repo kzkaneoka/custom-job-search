@@ -1,13 +1,16 @@
 aniso8601==8.0.0
 appdirs==1.4.3
 attrs==19.3.0
+bcrypt==3.1.7
 black==19.10b0
+cffi==1.13.2
 Click==7.0
 coverage==4.5.4
 entrypoints==0.3
 flake8==3.7.9
 Flask==1.1.1
 Flask-Admin==1.5.4
+Flask-Bcrypt==0.7.1
 Flask-Cors==3.0.8
 Flask-RESTful==0.3.7
 Flask-SQLAlchemy==2.4.1
@@ -25,7 +28,9 @@ pluggy==0.13.1
 psycopg2-binary==2.8.4
 py==1.8.0
 pycodestyle==2.5.0
+pycparser==2.19
 pyflakes==2.1.1
+PyJWT==1.7.1
 pyparsing==2.4.5
 pytest==5.3.1
 pytest-cov==2.8.1
