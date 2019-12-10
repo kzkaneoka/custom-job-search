@@ -17,19 +17,13 @@ class App extends Component {
       title: "Template"
     };
     this.addUser = this.addUser.bind(this);
+    this.handleLoginFormSubmit = this.handleLoginFormSubmit.bind(this);
+    this.handleRegisterFormSubmit = this.handleRegisterFormSubmit.bind(this);
+    this.logoutUser = this.logoutUser.bind(this);
+    this.isAuthenticated = this.isAuthenticated.bind(this);
   }
   componentDidMount() {
     this.getUsers();
-  }
-  getUsers() {
-    axios
-      .get(`${process.env.REACT_APP_BACKEND_SERVICE_URL}/users`)
-      .then(res => {
-        this.setState({ users: res.data.data.users });
-      })
-      .catch(err => {
-        console.log(err);
-      });
   }
   addUser(data) {
     axios
@@ -42,10 +36,63 @@ class App extends Component {
         console.log(err);
       });
   }
+  getUsers() {
+    axios
+      .get(`${process.env.REACT_APP_BACKEND_SERVICE_URL}/users`)
+      .then(res => {
+        this.setState({ users: res.data.data.users });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+  handleLoginFormSubmit(data) {
+    const url = `${process.env.REACT_APP_BACKEND_SERVICE_URL}/auth/login`;
+    axios
+      .post(url, data)
+      .then(res => {
+        window.localStorage.setItem("authToken", res.data.auth_token);
+        setTimeout(
+          function() {
+            this.getUsers();
+          }.bind(this),
+          300
+        );
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+  handleRegisterFormSubmit(data) {
+    const url = `${process.env.REACT_APP_BACKEND_SERVICE_URL}/auth/register`;
+    axios
+      .post(url, data)
+      .then(res => {
+        window.localStorage.setItem("authToken", res.data.auth_token);
+        setTimeout(
+          function() {
+            this.getUsers();
+          }.bind(this),
+          300
+        );
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+  logoutUser() {
+    window.localStorage.removeItem("authToken");
+  }
+  isAuthenticated() {
+    if (window.localStorage.getItem("authToken")) {
+      return true;
+    }
+    return false;
+  }
   render() {
     return (
       <div>
-        <NavBar title={this.state.title} />
+        <NavBar title={this.state.title} logoutUser={this.logoutUser} />
         <section className="section">
           <div className="container">
             <div className="columns">
@@ -68,8 +115,26 @@ class App extends Component {
                     )}
                   />
                   <Route exact path="/about" component={About} />
-                  <Route exact path="/register" component={RegisterForm} />
-                  <Route exact path="/login" component={LoginForm} />
+                  <Route
+                    exact
+                    path="/register"
+                    render={() => (
+                      <RegisterForm
+                        handleRegisterFormSubmit={this.handleRegisterFormSubmit}
+                        isAuthenticated={this.isAuthenticated}
+                      />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path="/login"
+                    render={() => (
+                      <LoginForm
+                        handleLoginFormSubmit={this.handleLoginFormSubmit}
+                        isAuthenticated={this.isAuthenticated}
+                      />
+                    )}
+                  />
                 </Switch>
               </div>
             </div>

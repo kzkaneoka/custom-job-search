@@ -146,7 +146,7 @@ def test_user_registration_invalid_json_keys_no_password(test_app, test_database
 
 
 def test_registered_user_login(test_app):
-    user = add_user(
+    add_user(
         "test_registered_user_login",
         "test_registered_user_login@test.com",
         "test_password",
@@ -190,7 +190,7 @@ def test_not_registered_user_login(test_app, test_database):
 
 
 def test_valid_logout(test_app):
-    user = add_user("test_valid_logout", "test_valid_logout@test.com", "test_password")
+    add_user("test_valid_logout", "test_valid_logout@test.com", "test_password")
     client = test_app.test_client()
     # user login
     resp_login = client.post(
@@ -215,7 +215,7 @@ def test_valid_logout(test_app):
 
 
 def test_invalid_logout_expired_token(test_app, test_database):
-    user = add_user(
+    add_user(
         "test_invalid_logout_expired_token",
         "test_invalid_logout_expired_token@test.com",
         "test_password",
@@ -249,7 +249,7 @@ def test_invalid_logout_expired_token(test_app, test_database):
 
 
 def test_user_status(test_app):
-    user = add_user("test_user_status", "test_user_status@test.com", "test_password")
+    add_user("test_user_status", "test_user_status@test.com", "test_password")
     client = test_app.test_client()
     resp_login = client.post(
         "/auth/login",

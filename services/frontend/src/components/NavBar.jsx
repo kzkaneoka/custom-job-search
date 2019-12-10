@@ -1,5 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+
+import "./NavBar.css";
 
 const titleStyle = {
   fontWeight: "bold"
@@ -46,9 +49,9 @@ const NavBar = props => (
           <Link to="/login" className="navbar-item">
             Log In
           </Link>
-          <Link to="/logout" className="navbar-item">
+          <span onClick={props.logoutUser} className="navbar-item link">
             Log Out
-          </Link>
+          </span>
         </div>
       </div>
     </section>
@@ -56,3 +59,8 @@ const NavBar = props => (
 );
 
 export default NavBar;
+
+NavBar.propTypes = {
+  title: PropTypes.string.isRequired,
+  logoutUser: PropTypes.func.isRequired
+};
