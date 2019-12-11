@@ -8,6 +8,7 @@ import About from "./components/About";
 import NavBar from "./components/NavBar";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
+import UserStatus from "./components/UserStatus";
 
 class App extends Component {
   constructor() {
@@ -82,17 +83,38 @@ class App extends Component {
   }
   logoutUser() {
     window.localStorage.removeItem("authToken");
+    this.forceUpdate();
   }
   isAuthenticated() {
-    if (window.localStorage.getItem("authToken")) {
-      return true;
+    const token = window.localStorage.getItem("authToken");
+    if (token) {
+      const options = {
+        url: `${process.env.REACT_APP_BACKEND_SERVICE_URL}/auth/status`,
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      };
+      return axios(options)
+        .then(res => {
+          return true;
+        })
+        .catch(err => {
+          this.logoutUser();
+          return false;
+        });
     }
     return false;
   }
   render() {
     return (
       <div>
-        <NavBar title={this.state.title} logoutUser={this.logoutUser} />
+        <NavBar
+          title={this.state.title}
+          logoutUser={this.logoutUser}
+          isAuthenticated={this.isAuthenticated}
+        />
         <section className="section">
           <div className="container">
             <div className="columns">
@@ -133,6 +155,13 @@ class App extends Component {
                         handleLoginFormSubmit={this.handleLoginFormSubmit}
                         isAuthenticated={this.isAuthenticated}
                       />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path="/status"
+                    render={() => (
+                      <UserStatus isAuthenticated={this.isAuthenticated} />
                     )}
                   />
                 </Switch>
