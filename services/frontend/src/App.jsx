@@ -51,7 +51,7 @@ class App extends Component {
   }
   addUser(data) {
     axios
-      .post(`${process.env.REACT_APP_BACKEND_SERVICE_URL}/users`, data)
+      .post(`${process.env.REACT_APP_BACKEND_SERVICE}/users`, data)
       .then(res => {
         this.getUsers();
         this.setState({ username: "", email: "" });
@@ -75,7 +75,7 @@ class App extends Component {
   }
   getUsers() {
     axios
-      .get(`${process.env.REACT_APP_BACKEND_SERVICE_URL}/users`)
+      .get(`${process.env.REACT_APP_BACKEND_SERVICE}/users`)
       .then(res => {
         this.setState({ users: res.data.data.users });
       })
@@ -84,7 +84,7 @@ class App extends Component {
       });
   }
   handleRegisterFormSubmit(data) {
-    const url = `${process.env.REACT_APP_BACKEND_SERVICE_URL}/auth/register`;
+    const url = `${process.env.REACT_APP_BACKEND_SERVICE}/auth/register`;
     axios
       .post(url, data)
       .then(res => {
@@ -103,7 +103,7 @@ class App extends Component {
       });
   }
   handleLoginFormSubmit(data) {
-    const url = `${process.env.REACT_APP_BACKEND_SERVICE_URL}/auth/login`;
+    const url = `${process.env.REACT_APP_BACKEND_SERVICE}/auth/login`;
     axios
       .post(url, data)
       .then(res => {
@@ -135,7 +135,7 @@ class App extends Component {
     const token = window.localStorage.getItem("authToken");
     if (token) {
       const options = {
-        url: `${process.env.REACT_APP_BACKEND_SERVICE_URL}/auth/status`,
+        url: `${process.env.REACT_APP_BACKEND_SERVICE}/auth/status`,
         method: "get",
         headers: {
           "Content-Type": "application/json",
@@ -161,7 +161,7 @@ class App extends Component {
   }
   removeUser(user_id) {
     axios
-      .delete(`${process.env.REACT_APP_BACKEND_SERVICE_URL}/users/${user_id}`)
+      .delete(`${process.env.REACT_APP_BACKEND_SERVICE}/users/${user_id}`)
       .then(res => {
         this.getUsers();
         this.createMessage("success", "User removed.");

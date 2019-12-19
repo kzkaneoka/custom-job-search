@@ -1,3 +1,3 @@
-CREATE DATABASE backend_dev;
-CREATE DATABASE backend_test;
-CREATE DATABASE backend_prod;
+CREATE DATABASE database_dev;
+CREATE DATABASE database_test;
+CREATE DATABASE database_prod;
