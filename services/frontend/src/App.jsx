@@ -11,6 +11,7 @@ import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import UserStatus from "./components/UserStatus";
 import Message from "./components/Message";
+import SearchForm from "./components/SearchForm";
 
 const modalStyles = {
   content: {
@@ -40,6 +41,7 @@ class App extends Component {
     this.handleLoginFormSubmit = this.handleLoginFormSubmit.bind(this);
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
+    this.handleSearchFormSubmit = this.handleSearchFormSubmit.bind(this);
     this.logoutUser = this.logoutUser.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
     this.removeMessage = this.removeMessage.bind(this);
@@ -127,6 +129,17 @@ class App extends Component {
   handleCloseModal() {
     this.setState({ showModal: false });
   }
+  handleSearchFormSubmit(data) {
+    const url = `${process.env.REACT_APP_BACKEND_SERVICE}/search`;
+    axios
+      .post(url, data)
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
   logoutUser() {
     window.localStorage.removeItem("authToken");
     this.forceUpdate();
@@ -196,44 +209,9 @@ class App extends Component {
                     exact
                     path="/"
                     render={() => (
-                      <div>
-                        <h1 className="title is-1">Users</h1>
-                        <hr />
-                        <br />
-                        <button
-                          onClick={this.handleOpenModal}
-                          className="button is-primary"
-                        >
-                          Add User
-                        </button>
-                        <br />
-                        <br />
-                        <Modal
-                          isOpen={this.state.showModal}
-                          style={modalStyles}
-                        >
-                          <div className="modal is-active">
-                            <div className="modal-background" />
-                            <div className="modal-card">
-                              <header className="modal-card-head">
-                                <p className="modal-card-title">Add User</p>
-                                <button
-                                  className="delete"
-                                  aria-label="close"
-                                  onClick={this.handleCloseModal}
-                                />
-                              </header>
-                              <section className="modal-card-body">
-                                <AddUser addUser={this.addUser} />
-                              </section>
-                            </div>
-                          </div>
-                        </Modal>
-                        <UsersList
-                          users={this.state.users}
-                          removeUser={this.removeUser}
-                        />
-                      </div>
+                      <SearchForm
+                        handleSearchFormSubmit={this.handleSearchFormSubmit}
+                      />
                     )}
                   />
                   <Route exact path="/about" component={About} />

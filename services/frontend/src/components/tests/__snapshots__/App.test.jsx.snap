@@ -81,41 +81,53 @@ exports[`renders 1`] = `
               <h1
                 class="title is-1"
               >
-                Users
+                Job Search
               </h1>
               <hr />
               <br />
-              <button
-                class="button is-primary"
-              >
-                Add User
-              </button>
-              <br />
-              <br />
-              <div>
-                <table
-                  class="table is-hoverable is-fullwidth"
+              <form>
+                <div
+                  class="field"
                 >
-                  <thead>
-                    <tr>
-                      <th>
-                        ID
-                      </th>
-                      <th>
-                        Email
-                      </th>
-                      <th>
-                        Username
-                      </th>
-                      <th>
-                        Active
-                      </th>
-                      <th />
-                    </tr>
-                  </thead>
-                  <tbody />
-                </table>
-              </div>
+                  <label
+                    class="label"
+                    for="input-words"
+                  >
+                    Words
+                  </label>
+                  <input
+                    class="input"
+                    id="input-words"
+                    name="words"
+                    placeholder="Enter words. You can add multiple words separeated by comma."
+                    type="text"
+                    value=""
+                  />
+                </div>
+                <div
+                  class="field"
+                >
+                  <label
+                    class="label"
+                    for="input-locations"
+                  >
+                    Locations
+                  </label>
+                  <input
+                    class="input"
+                    id="input-locations"
+                    name="locations"
+                    placeholder="Enter locations. You can add multiple locations separeated by comma."
+                    type="text"
+                    value=""
+                  />
+                </div>
+                <input
+                  class="button is-primary"
+                  type="submit"
+                  value="Submit"
+                />
+              </form>
             </div>
           </div>
         </div>
