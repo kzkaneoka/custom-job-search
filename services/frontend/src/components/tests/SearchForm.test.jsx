@@ -27,9 +27,9 @@ describe("renders", () => {
     expect(wordsInput).toHaveAttribute("type", "text");
     expect(wordsInput).not.toHaveValue();
 
-    const locationsInput = getByLabelText("Locations");
-    expect(locationsInput).toHaveAttribute("type", "text");
-    expect(locationsInput).not.toHaveValue();
+    const locationInput = getByLabelText("Location");
+    expect(locationInput).toHaveAttribute("type", "text");
+    expect(locationInput).not.toHaveValue();
 
     const buttonInput = getByText("Submit");
     expect(buttonInput).toHaveValue("Submit");

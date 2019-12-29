@@ -15,7 +15,7 @@ const SearchForm = props => {
       <Formik
         initialValues={{
           words: "",
-          locations: ""
+          location: "",
         }}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           props.handleSearchFormSubmit(values);
@@ -26,8 +26,8 @@ const SearchForm = props => {
           words: Yup.string().required(
             "At leaset one word is required. You can add multiple words separeated by comma."
           ),
-          locations: Yup.string().required(
-            "At least one location is required. You can add multiple locations separated by comma."
+          location: Yup.string().required(
+            "Location is required."
           )
         })}
       >
@@ -66,29 +66,29 @@ const SearchForm = props => {
                 )}
               </div>
               <div className="field">
-                <label className="label" htmlFor="input-locations">
-                  Locations
+                <label className="label" htmlFor="input-location">
+                  Location
                 </label>
                 <input
-                  name="locations"
-                  id="input-locations"
+                  name="location"
+                  id="input-location"
                   className={
-                    errors.locations && touched.locations
+                    errors.location && touched.location
                       ? "input error"
                       : "input"
                   }
                   type="text"
-                  placeholder="Enter locations. You can add multiple locations separeated by comma."
-                  value={values.locations}
+                  placeholder="Enter location."
+                  value={values.location}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.locations && touched.locations && (
+                {errors.location && touched.location && (
                   <div
                     className="input-feedback"
-                    data-testid="errors-locations"
+                    data-testid="errors-location"
                   >
-                    {errors.locations}
+                    {errors.location}
                   </div>
                 )}
               </div>

@@ -28,10 +28,12 @@ def create_app(script_info=None):
 
     from project.api.auth import auth_blueprint
     from project.api.ping import ping_blueprint
+    from project.api.search import search_blueprint
     from project.api.users.views import users_blueprint
 
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(ping_blueprint)
+    app.register_blueprint(search_blueprint)
     app.register_blueprint(users_blueprint)
 
     @app.shell_context_processor
