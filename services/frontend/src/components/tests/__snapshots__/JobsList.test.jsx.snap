@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders 1`] = `
+<DocumentFragment>
+  <div>
+    <table
+      class="table is-hoverable is-fullwidth"
+    >
+      <thead>
+        <tr>
+          <th>
+            Company
+          </th>
+          <th>
+            Job Title
+          </th>
+          <th>
+            Location
+          </th>
+          <th>
+            Posted Date
+          </th>
+          <th>
+            Link
+          </th>
+          <th />
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            ABC
+          </td>
+          <td>
+            Software Engineer
+          </td>
+          <td>
+            San Francisco
+          </td>
+          <td>
+            n/a
+          </td>
+          <td>
+            https://www.indeed.com/abc
+          </td>
+        </tr>
+        <tr>
+          <td>
+            XXX
+          </td>
+          <td>
+            Backend Engineer
+          </td>
+          <td>
+            San Jose
+          </td>
+          <td>
+            n/a
+          </td>
+          <td>
+            https://www.indeed.com/xxx
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</DocumentFragment>
+`;

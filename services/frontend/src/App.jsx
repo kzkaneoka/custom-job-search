@@ -1,90 +1,62 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Route, Switch } from "react-router-dom";
-import Modal from "react-modal";
+import { CSVLink, CSVDownload } from "react-csv";
 
-import UsersList from "./components/UsersList";
-import AddUser from "./components/AddUser";
-import About from "./components/About";
 import NavBar from "./components/NavBar";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
-import UserStatus from "./components/UserStatus";
-import Message from "./components/Message";
 import SearchForm from "./components/SearchForm";
-
-const modalStyles = {
-  content: {
-    top: "0",
-    left: "0",
-    right: "0",
-    bottom: "0",
-    border: 0,
-    background: "transparent"
-  }
-};
-
-Modal.setAppElement(document.getElementById("root"));
+import JobsList from "./components/JobsList";
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      users: [],
-      title: "Template",
-      messageType: null,
-      messageText: null,
-      showModal: false
+      title: "Custom Job Search",
+      jobs: [],
+      location: "",
+      words: "",
+      offset: -1
     };
     this.addUser = this.addUser.bind(this);
+    this.handleSearchFormSubmit = this.handleSearchFormSubmit.bind(this);
     this.handleRegisterFormSubmit = this.handleRegisterFormSubmit.bind(this);
     this.handleLoginFormSubmit = this.handleLoginFormSubmit.bind(this);
-    this.handleOpenModal = this.handleOpenModal.bind(this);
-    this.handleCloseModal = this.handleCloseModal.bind(this);
-    this.handleSearchFormSubmit = this.handleSearchFormSubmit.bind(this);
     this.logoutUser = this.logoutUser.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
-    this.removeMessage = this.removeMessage.bind(this);
-    this.removeUser = this.removeUser.bind(this);
   }
-  componentDidMount() {
-    this.getUsers();
-    this.createMessage();
-  }
+
   addUser(data) {
     axios
       .post(`${process.env.REACT_APP_BACKEND_SERVICE}/users`, data)
       .then(res => {
         this.getUsers();
         this.setState({ username: "", email: "" });
-        this.handleCloseModal();
-        this.createMessage("success", "User added.");
       })
       .catch(err => {
         console.log(err);
-        this.handleCloseModal();
-        this.createMessage("danger", "That user already exists.");
       });
   }
-  createMessage(type, text) {
-    this.setState({
-      messageType: type,
-      messageText: text
-    });
-    setTimeout(() => {
-      this.removeMessage();
-    }, 3000);
-  }
-  getUsers() {
+
+  handleSearchFormSubmit(data) {
+    const url = `${process.env.REACT_APP_BACKEND_SERVICE}/search`;
+    data.offset = this.state.offset + 1;
     axios
-      .get(`${process.env.REACT_APP_BACKEND_SERVICE}/users`)
+      .post(url, data)
       .then(res => {
-        this.setState({ users: res.data.data.users });
+        this.setState({
+          jobs: res.data.data.jobs,
+          location: res.data.data.location,
+          words: res.data.data.words,
+          offset: data.offset
+        });
       })
       .catch(err => {
         console.log(err);
       });
   }
+
   handleRegisterFormSubmit(data) {
     const url = `${process.env.REACT_APP_BACKEND_SERVICE}/auth/register`;
     axios
@@ -104,6 +76,7 @@ class App extends Component {
         this.createMessage("danger", "That user already exists.");
       });
   }
+
   handleLoginFormSubmit(data) {
     const url = `${process.env.REACT_APP_BACKEND_SERVICE}/auth/login`;
     axios
@@ -123,27 +96,12 @@ class App extends Component {
         this.createMessage("danger", "Incorrect email and/or password.");
       });
   }
-  handleOpenModal() {
-    this.setState({ showModal: true });
-  }
-  handleCloseModal() {
-    this.setState({ showModal: false });
-  }
-  handleSearchFormSubmit(data) {
-    const url = `${process.env.REACT_APP_BACKEND_SERVICE}/search`;
-    axios
-      .post(url, data)
-      .then(res => {
-        console.log(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
+
   logoutUser() {
     window.localStorage.removeItem("authToken");
     this.forceUpdate();
   }
+
   isAuthenticated() {
     const token = window.localStorage.getItem("authToken");
     if (token) {
@@ -166,24 +124,11 @@ class App extends Component {
     }
     return false;
   }
-  removeMessage() {
-    this.setState({
-      messageType: null,
-      messageText: null
-    });
+
+  isJobsEmpty() {
+    return this.state.jobs.length == 0;
   }
-  removeUser(user_id) {
-    axios
-      .delete(`${process.env.REACT_APP_BACKEND_SERVICE}/users/${user_id}`)
-      .then(res => {
-        this.getUsers();
-        this.createMessage("success", "User removed.");
-      })
-      .catch(err => {
-        console.log(err);
-        this.createMessage("danger", "Something went wrong.");
-      });
-  }
+
   render() {
     return (
       <div>
@@ -192,13 +137,6 @@ class App extends Component {
           logoutUser={this.logoutUser}
           isAuthenticated={this.isAuthenticated}
         />
-        {this.state.messageType && this.state.messageText && (
-          <Message
-            messageType={this.state.messageType}
-            messageText={this.state.messageText}
-            removeMessage={this.removeMessage}
-          />
-        )}
         <section className="section">
           <div className="container">
             <div className="columns">
@@ -209,12 +147,23 @@ class App extends Component {
                     exact
                     path="/"
                     render={() => (
-                      <SearchForm
-                        handleSearchFormSubmit={this.handleSearchFormSubmit}
-                      />
+                      <div>
+                        <SearchForm
+                          handleSearchFormSubmit={this.handleSearchFormSubmit}
+                        />
+                        <JobsList jobs={this.state.jobs} />
+                        {!this.isJobsEmpty() && (
+                          <CSVLink
+                            data={this.state.jobs}
+                            filename={"searched-jobs.csv"}
+                            className="btn btn-primary"
+                          >
+                            Download Jobs as CSV file
+                          </CSVLink>
+                        )}
+                      </div>
                     )}
                   />
-                  <Route exact path="/about" component={About} />
                   <Route
                     exact
                     path="/register"
@@ -233,13 +182,6 @@ class App extends Component {
                         handleLoginFormSubmit={this.handleLoginFormSubmit}
                         isAuthenticated={this.isAuthenticated}
                       />
-                    )}
-                  />
-                  <Route
-                    exact
-                    path="/status"
-                    render={() => (
-                      <UserStatus isAuthenticated={this.isAuthenticated} />
                     )}
                   />
                 </Switch>

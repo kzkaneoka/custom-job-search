@@ -21,7 +21,6 @@ describe("when unauthenticated", () => {
     await wait(() => {
       expect(props.isAuthenticated).toHaveBeenCalledTimes(1);
     });
-    expect((await findByTestId("nav-about")).innerHTML).toBe("About");
     expect((await findByTestId("nav-register")).innerHTML).toBe("Register");
     expect((await findByTestId("nav-login")).innerHTML).toBe("Log In");
   });
@@ -47,7 +46,6 @@ describe("when authenticated", () => {
     await wait(() => {
       expect(props.isAuthenticated).toHaveBeenCalledTimes(1);
     });
-    expect((await findByTestId("nav-about")).innerHTML).toBe("About");
     expect((await findByTestId("nav-status")).innerHTML).toBe("User Status");
     expect((await findByTestId("nav-logout")).innerHTML).toBe("Log Out");
   });

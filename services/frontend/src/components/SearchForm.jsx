@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { Redirect } from "react-router-dom";
 
 import "./form.css";
 
@@ -15,20 +14,17 @@ const SearchForm = props => {
       <Formik
         initialValues={{
           words: "",
-          location: "",
+          location: ""
         }}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           props.handleSearchFormSubmit(values);
-          resetForm();
           setSubmitting(false);
         }}
         validationSchema={Yup.object().shape({
           words: Yup.string().required(
             "At leaset one word is required. You can add multiple words separeated by comma."
           ),
-          location: Yup.string().required(
-            "Location is required."
-          )
+          location: Yup.string().required("Location is required.")
         })}
       >
         {props => {
@@ -84,10 +80,7 @@ const SearchForm = props => {
                   onBlur={handleBlur}
                 />
                 {errors.location && touched.location && (
-                  <div
-                    className="input-feedback"
-                    data-testid="errors-location"
-                  >
+                  <div className="input-feedback" data-testid="errors-location">
                     {errors.location}
                   </div>
                 )}
@@ -95,7 +88,7 @@ const SearchForm = props => {
               <input
                 type="submit"
                 className="button is-primary"
-                value="Submit"
+                value="Search Jobs"
                 disabled={isSubmitting}
               />
             </form>

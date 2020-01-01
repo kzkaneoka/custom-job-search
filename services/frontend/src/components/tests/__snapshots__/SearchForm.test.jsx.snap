@@ -34,15 +34,15 @@ exports[`renders a snapshot properly 1`] = `
       >
         <label
           class="label"
-          for="input-locations"
+          for="input-location"
         >
-          Locations
+          Location
         </label>
         <input
           class="input"
-          id="input-locations"
-          name="locations"
-          placeholder="Enter locations. You can add multiple locations separeated by comma."
+          id="input-location"
+          name="location"
+          placeholder="Enter location."
           type="text"
           value=""
         />
@@ -50,7 +50,7 @@ exports[`renders a snapshot properly 1`] = `
       <input
         class="button is-primary"
         type="submit"
-        value="Submit"
+        value="Search Jobs"
       />
     </form>
   </div>

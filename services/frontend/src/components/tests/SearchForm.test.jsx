@@ -31,8 +31,8 @@ describe("renders", () => {
     expect(locationInput).toHaveAttribute("type", "text");
     expect(locationInput).not.toHaveValue();
 
-    const buttonInput = getByText("Submit");
-    expect(buttonInput).toHaveValue("Submit");
+    const buttonInput = getByText("Search Jobs");
+    expect(buttonInput).toHaveValue("Search Jobs");
   });
 
   it("a snapshot properly", () => {
