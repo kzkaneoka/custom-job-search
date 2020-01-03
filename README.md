@@ -1,6 +1,6 @@
-# Template
+# Custom Job Search
 
-This is a template for a web application using a microservice architecture pattern.
+It is a web application to search for jobs. It aims to minimize the browse time on job search sites as much as possible.
 
 ## License
 
