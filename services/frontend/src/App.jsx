@@ -65,7 +65,6 @@ class App extends Component {
         window.localStorage.setItem("authToken", res.data.auth_token);
         setTimeout(
           function() {
-            this.getUsers();
             this.createMessage("success", "You have registered successfully.");
           }.bind(this),
           300
@@ -85,7 +84,6 @@ class App extends Component {
         window.localStorage.setItem("authToken", res.data.auth_token);
         setTimeout(
           function() {
-            this.getUsers();
             this.createMessage("success", "You have logged in successfully.");
           }.bind(this),
           300
